@@ -28,22 +28,6 @@
 
 # verificar se ta no range, verificar 
 
-# def fill_dict(expression, runes):
-# 	flag = 0
-# 	for c in runes:
-# 		if c in "+-*" and flag == 0:
-# 			expression["op"] += c
-# 			flag = 2
-# 		elif c == "=":
-# 			flag = 3
-# 		elif flag == 0:
-# 			expression["lhs"] += c
-# 		elif flag == 2:
-#			 expression["rhs"] += c
-# 		elif flag == 3:
-# 			expression["result"] += c
-
-
 def fill_dict(expression, runes):
 	i = 0
 	found_op = 0
@@ -89,48 +73,12 @@ def calculate(lhs, op, rhs):
 
 
 def is_zero_left(expression):
-	i = 0
-	is_valid_lhs = 1
-	is_valid_rhs = 1
-	is_valid_ = 1
-# -????? = False
-# -4? = True
-# ?  = True
-# 1? = True
-# ?1 = False
-	if expression["lhs"][0] == '-':
-			i += 1
-	while i < len(expression["lhs"]):
-		if (expression["rhs"][i - 1].isnum() or len(expression["rhs"]) == 1) and expression["lhs"][i] == '?':
-			is_valid_lhs = 1
-		elif expression["lhs"][i] == '?' and expression["lhs"][i + 1] != '?':
-			is_valid_lhs = 0
-			break
-		i += 1
-	i = 0
-	if expression["rhs"][0] == '-':
-		i += 1
-	while i < len(expression["rhs"]):
-		if expression["rhs"][i - 1].isnum() and expression["rhs"][i] == '?':
-			is_valid_rhs = 1
-		elif expression["rhs"][i] == '?' and expression["rhs"][i + 1] != '?':
-			is_valid_rhs = 0
-			break
-		i += 1
-	i = 0
-	if expression["result"][0] == '-':
-		i += 1
-	while i < len(expression["result"]):
-		if expression["result"][i] == '?':
-			is_valid_result = 1
-		elif expression["result"][i] == '?' and expression["result"][i + 1] != '?':
-			is_valid_result = 0
-			break
-		i += 1
-	if is_valid_lhs == 0 or is_valid_result == 0 or is_valid_rhs == 0:
-		return True
-	else:
-		return False
+	for string in [expression["lhs"], expression["rhs"], expression["result"]]:
+		if string[0 + (string[0] == '-')] == '?' and len(string) > 1:
+			return True
+	return False
+
+
 
 
 def verifier(runes, i):
@@ -144,9 +92,7 @@ def solve_runes(runes):
 	expression = {"lhs": "", "rhs": "", "op": "", "result": ""}
 	fill_dict(expression, runes)
 	i = 0
-	#if (expression["lhs"][0] == '?') or (expression["rhs"][0] == '?') or (expression["result"][0] == '?'):
-	#	i += 1
-	if is_zero_left(expression) == False:
+	if is_zero_left(expression):
 		i += 1
 	while i <= 9:
 		if verifier(runes, str(i)):
@@ -159,15 +105,16 @@ def solve_runes(runes):
 		if final == "error":
 			return -1
 		if (final == new_result):
-			if (new_lhs and new_rhs and new_result) in range(-1000000, 1000001):
+			if (new_lhs in range(-1000000, 1000001)) and (new_rhs in range(-1000000, 1000001)) and (new_result in range(-1000000, 1000001)):
 				return i
 		i += 1
 	return -1
 
 
 if __name__ == "__main__":
- 	print(solve_runes("-6561+-?1772=-?8333"))
-# if (new_lhs in range(-1000000, 1000001)) and (new_rhs in range(-1000000, 1000001)) and (new_result in range(-1000000, 1000001)):
+ 	# print(solve_runes("-6561+-?1772=-?8333"))
+ 	print(solve_runes("?*11=??"))
+
 
 # def is_zero_left(expression):
 # 	i = 0
@@ -175,32 +122,32 @@ if __name__ == "__main__":
 # 	is_valid_rhs = 1
 # 	is_valid_ = 1
 
-	# while expression["lhs"][i]:
-	# 	if expression["lhs"][i] == '-':
-	# 		i += 1
-# 		elif expression["lhs"][i] == '?':
+# 	if expression["lhs"][0] == '-':
+# 			i += 1
+# 	while i < len(expression["lhs"]):
+# 		if (expression["rhs"][i - 1].isdigit() or len(expression["rhs"]) == 1) and expression["lhs"][i] == '?':
 # 			is_valid_lhs = 1
-# 		elif expression["lhs"][i] != '?' and i > 1:
+# 		elif expression["lhs"][i] == '?' and expression["lhs"][i + 1] != '?':
 # 			is_valid_lhs = 0
 # 			break
 # 		i += 1
 # 	i = 0
-# 	while expression["rhs"][i]:
-	# 	if expression["rhs"][i] == '-':
-	# 		i += 1
-# 		if expression["rhs"][i] == '?':
+# 	if expression["rhs"][0] == '-':
+# 		i += 1
+# 	while i < len(expression["rhs"]):
+# 		if expression["rhs"][i - 1].isdigit() and expression["rhs"][i] == '?':
 # 			is_valid_rhs = 1
-# 		elif expression["rhs"][i] != '?' and i > 1:
+# 		elif expression["rhs"][i] == '?' and expression["rhs"][i + 1] != '?':
 # 			is_valid_rhs = 0
 # 			break
 # 		i += 1
 # 	i = 0
-# 	while expression["result"][i]:
-	# 	if expression["result"][i] == '-':
-	# 		i += 1
+# 	if expression["result"][0] == '-':
+# 		i += 1
+# 	while i < len(expression["result"]):
 # 		if expression["result"][i] == '?':
 # 			is_valid_result = 1
-# 		elif expression["result"][i] != '?' and i > 1:
+# 		elif expression["result"][i] == '?' and expression["result"][i + 1] != '?':
 # 			is_valid_result = 0
 # 			break
 # 		i += 1
@@ -208,4 +155,9 @@ if __name__ == "__main__":
 # 		return True
 # 	else:
 # 		return False
-# "-5?*-1=5?"
+
+
+# ??
+# ?1
+# -?1
+# ?
